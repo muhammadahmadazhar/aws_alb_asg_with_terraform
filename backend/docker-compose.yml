@@ -1,0 +1,42 @@
+#version: "3.8"
+services:
+
+  web:
+    build: .
+    volumes:
+      - .:/project_dir
+      - static_files:/project_dir/staticfiles
+    ports:
+      - 8000:8000
+#    expose:
+#      - "8000"
+    image: app:project_dir # app will be image name and project_dir is tag
+    container_name: django_container
+    env_file:
+      - .env
+#    command: python manage.py runserver 0.0.0.0:8000
+#    command: >
+#      sh -c "python manage.py migrate &&
+#             python manage.py runserver 0.0.0.0:8000"
+    command: >
+      sh -c "
+      echo 'Running migrations...' &&
+      python manage.py migrate &&
+      if [ ! -d '/project_dir/staticfiles' ]; then
+      echo 'Collecting static files...' &&
+      python manage.py collectstatic --noinput;
+      else
+      echo 'Static files already collected. Skipping.';
+      fi &&
+      echo 'Starting Gunicorn...' &&
+      gunicorn core.wsgi:application \
+      --bind 0.0.0.0:8000 \
+      --workers 1 \
+      --threads 2 \
+      --timeout 120
+      "
+    restart: always # in development it should tern off
+
+
+volumes:
+  static_files:

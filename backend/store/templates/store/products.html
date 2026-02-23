@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product List</title>
+</head>
+<body>
+    <h1>Products</h1>
+
+    <ul>
+        {% for product in products %}
+            <li>
+                {{ product.name }} - ${{ product.price }}
+            </li>
+        {% empty %}
+            <li>No products found</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

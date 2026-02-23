@@ -1,0 +1,67 @@
+# ===== Terraform (infrastructure/) =====
+# Local working directory
+.terraform/
+# State files
+*.tfstate
+*.tfstate.backup
+# Variable definitions (may contain secrets)
+*.tfvars
+*.tfvars.json
+# Crash logs and plan files
+crash.log
+*.tfplan
+# Lockfile
+.terraform.lock.hcl
+
+# ===== Python / Django =====
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+backend/.env
+
+# Django local files
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+
+# Logs, coverage, testing
+*.log
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.tox/
+.mypy_cache/
+
+# Misc
+.python-version
+
+# ===== IDEs / Editors =====
+# VS Code
+.vscode/
+
+# PyCharm / JetBrains
+.idea/
+*.iml
+
+# ===== OS files =====
+.DS_Store
+Thumbs.db
