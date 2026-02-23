@@ -17,6 +17,11 @@ variable "max_size"              { type = number }
 variable "desired_capacity"      { type = number }
 variable "health_check_path"     { type = string }
 variable "acm_certificate_arn"   { type = string }
+variable "github_repo"           { type = string }
+variable "github_token"          { 
+    type = string 
+    sensitive = true 
+    }
 variable "db_host"               { type = string }
 variable "db_name"               { type = string }
 variable "db_username"           { 
@@ -183,6 +188,8 @@ resource "aws_launch_template" "app" {
   vpc_security_group_ids = [var.ec2_security_group_id]
 
   user_data = base64encode(templatefile("${path.module}/../../scripts/user_data.sh", {
+    github_repo        = var.github_repo
+    github_token       = var.github_token
     db_host            = var.db_host
     db_name            = var.db_name
     db_username        = var.db_username

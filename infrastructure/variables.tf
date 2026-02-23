@@ -156,3 +156,12 @@ variable "alert_email" {
   description = "Email address for CloudWatch alarm notifications"
   type        = string
 }
+
+variable "github_repo" {
+  type = string
+}
+
+variable "github_token" {
+  type      = string
+  sensitive = true
+}

@@ -94,6 +94,8 @@ module "compute" {
   health_check_path  = var.health_check_path
   acm_certificate_arn = var.acm_certificate_arn
 
+  github_repo        = var.github_repo
+  github_token       = var.github_token
   db_host            = module.database.db_endpoint
   db_name            = var.db_name
   db_username        = var.db_username

@@ -1,0 +1,3 @@
+terraform init
+terraform plan -var-file="dev.tfvars" -out=plan.tfplan
+terraform apply "plan.tfplan"
