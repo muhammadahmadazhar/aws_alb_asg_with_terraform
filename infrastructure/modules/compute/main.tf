@@ -195,7 +195,8 @@ resource "aws_launch_template" "app" {
     db_username        = var.db_username
     db_password        = var.db_password
     django_secret_key  = var.django_secret_key
-    allowed_hosts      = var.allowed_hosts
+    # allowed_hosts      = var.allowed_hosts
+    allowed_hosts      = aws_lb.main.dns_name
     # reports_bucket     = var.reports_bucket_name
     environment        = var.environment
   }))
