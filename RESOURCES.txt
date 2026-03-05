@@ -1,3 +1,7 @@
+WITH TERRAFORM LAUNCH OF ALB+ASG
 https://www.youtube.com/watch?v=Koabqyopqns&list=PLdpzxOOAlwvIc1TjTwopNSjRJkzES2ZXk&index=77
+
+MANUAL LAUNCH OF ALB+ASG
+https://www.youtube.com/watch?v=FZPTL_kNvXc&list=PLdpzxOOAlwvIc1TjTwopNSjRJkzES2ZXk&index=61
 
 https://registry.terraform.io/providers/hashicorp/aws/latest

@@ -4,3 +4,5 @@ terraform apply "plan.tfplan"
 
 
 sudo tail -n 200 /var/log/user-data.log
+sudo su - ubuntu
+sudo cat /home/ubuntu/app/backend/.env

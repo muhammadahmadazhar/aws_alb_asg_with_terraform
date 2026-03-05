@@ -123,3 +123,19 @@ module "database" {
   db_username        = var.db_username
   db_password        = var.db_password
 }
+
+# # -----------------------------------------------------------------------------
+# # Monitoring (CloudWatch)
+# # -----------------------------------------------------------------------------
+# module "monitoring" {
+#   source = "./modules/monitoring"
+
+#   project_name         = var.project_name
+#   environment          = var.environment
+#   asg_name             = module.compute.asg_name
+#   alb_arn_suffix       = module.compute.alb_arn_suffix
+#   target_group_arn_suffix = module.compute.target_group_arn_suffix
+#   db_instance_id       = module.database.db_instance_id
+#   alert_email          = var.alert_email
+# }
+
