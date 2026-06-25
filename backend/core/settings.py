@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'store'
+    'store',
+    "storages",
+    "rest_framework",
+
 ]
 
 MIDDLEWARE = [
@@ -121,3 +124,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+
+DEFAULT_FILE_STORAGE = "storages.backends.azure_storage.AzureStorage"
+
+AZURE_ACCOUNT_NAME = os.getenv("AZURE_ACCOUNT_NAME")
+AZURE_ACCOUNT_KEY = os.getenv("AZURE_ACCOUNT_KEY")
+AZURE_CONTAINER = os.getenv("AZURE_CONTAINER")
+
+AZURE_SSL = True
+AZURE_OVERWRITE_FILES = False
+AZURE_LOCATION = "media"
+
+MEDIA_URL = (
+    f"https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/"
+    f"{AZURE_CONTAINER}/"
+)

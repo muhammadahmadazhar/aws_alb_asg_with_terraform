@@ -8,6 +8,10 @@ echo "Starting deployment..."
 APP_DIR="/home/ubuntu/app"
 BACKEND_DIR="$APP_DIR/backend"
 
+PROJECT="${project_name}"
+ENV="${environment}"
+REGION="${aws_region}"
+
 sleep 10
 
 # Clone private repo using token
@@ -20,12 +24,30 @@ fi
 
 cd $BACKEND_DIR
 
+echo "Fetching config from SSM..."
+
+# =========================
+# DATABASE
+# =========================
+DB_USERNAME=$(aws ssm get-parameter \
+  --region $REGION \
+  --name "/$PROJECT/$ENV/db/username" \
+  --query "Parameter.Value" \
+  --output text)
+
+DB_PASSWORD=$(aws ssm get-parameter \
+  --region $REGION \
+  --name "/$PROJECT/$ENV/db/password" \
+  --with-decryption \
+  --query "Parameter.Value" \
+  --output text)
+
 echo "Creating backend .env file..."
 
 cat <<EOF > .env
 DB_NAME=${db_name}
-DB_USER=${db_username}
-DB_PASSWORD=${db_password}
+DB_USER=$DB_USERNAME
+DB_PASSWORD=$DB_PASSWORD
 DB_HOST=${db_host}
 DB_PORT=5432
 DJANGO_SECRET_KEY=${django_secret_key}

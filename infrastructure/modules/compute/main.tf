@@ -4,6 +4,7 @@
 
 variable "project_name"          { type = string }
 variable "environment"           { type = string }
+variable "aws_region"            { type = string }
 variable "vpc_id"                { type = string }
 variable "public_subnet_ids"     { type = list(string) }
 variable "private_subnet_ids"    { type = list(string) }
@@ -50,6 +51,36 @@ resource "aws_iam_role" "ec2" {
       Effect    = "Allow"
       Principal = { Service = "ec2.amazonaws.com" }
     }]
+  })
+}
+
+resource "aws_iam_role_policy" "ssm_read_db" {
+  name = "${var.project_name}-${var.environment}-ssm-read-db"
+  role = aws_iam_role.ec2.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "ReadDBParams"
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameter",
+          "ssm:GetParameters"
+        ]
+        Resource = [
+          "arn:aws:ssm:us-east-2:${data.aws_caller_identity.current.account_id}:parameter/${var.project_name}/${var.environment}/*"
+        ]
+      },
+      {
+        Sid    = "DecryptSSM"
+        Effect = "Allow"
+        Action = [
+          "kms:Decrypt"
+        ]
+        Resource = "*"
+      }
+    ]
   })
 }
 
@@ -179,6 +210,7 @@ resource "aws_launch_template" "app" {
   name_prefix   = "${var.project_name}-${var.environment}-"
   image_id      = var.ami_id
   instance_type = var.instance_type
+  # user_data_replace_on_change = true
   key_name      = var.key_name != "" ? var.key_name : null
 
   iam_instance_profile {
@@ -188,12 +220,13 @@ resource "aws_launch_template" "app" {
   vpc_security_group_ids = [var.ec2_security_group_id]
 
   user_data = base64encode(templatefile("${path.module}/../../scripts/user_data.sh", {
+    project_name       = var.project_name
+    environment        = var.environment
+    aws_region         = var.aws_region
     github_repo        = var.github_repo
     github_token       = var.github_token
     db_host            = var.db_host
     db_name            = var.db_name
-    db_username        = var.db_username
-    db_password        = var.db_password
     django_secret_key  = var.django_secret_key
     allowed_hosts      = var.allowed_hosts
     # reports_bucket     = var.reports_bucket_name
